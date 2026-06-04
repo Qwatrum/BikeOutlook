@@ -15,11 +15,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello"
-        android:id="@+id/clik" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <org.osmdroid.views.MapView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/map" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/accent"
+            android:layout_gravity="top|start"
+            android:fontFamily="sans-serif-black" />
+
+
+
+    </FrameLayout>
+
+
+
 
 
 
