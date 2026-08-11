@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, precision_score, f1_score, recall_score
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, precision_score, recall_score, f1_score
 
 df = pd.read_csv("jj_train0_m.csv", header=None)
 
@@ -12,10 +12,11 @@ x_raw = df.iloc[:, 1:].values
 
 x_train, x_test, y_train_raw, y_test_raw = train_test_split(x_raw, y_raw, test_size=0.1, shuffle=False)
 
-rf = RandomForestRegressor(
+rf = RandomForestClassifier(
     n_estimators=100,
     max_depth=12,
-    random_state=42
+    random_state=42,
+    class_weight='balanced'
 )
 
 rf.fit(x_train, y_train_raw)
@@ -24,6 +25,7 @@ y_pred = rf.predict(x_test)
 mse = mean_squared_error(y_test_raw, y_pred)
 rmse = np.sqrt(mse)
 r2 = r2_score(y_test_raw, y_pred)
+
 accuarcy = accuracy_score(y_test_raw, y_pred)
 precision = precision_score(y_test_raw, y_pred)
 recall = recall_score(y_test_raw, y_pred)
@@ -37,7 +39,5 @@ print(f"precision: {precision:.4f}")
 print(f"recall: {recall:.4f}")
 print(f"f1: {f1:.4f}")
 
-
-'''
-for i in range(-11,1,1):
+'''for i in range(-42,1,1):
     print(rf.predict([x_test[i]]))'''

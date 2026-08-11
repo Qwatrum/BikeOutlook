@@ -27,8 +27,9 @@ for station in ['306149925', '306150652', '306151680', '306152946', '306153381',
     fieldnames.append(f"station_{station}_before_15")
     fieldnames.append(f"station_{station}_current")
 #print(fieldnames)
+amounts = []
 for i, line in enumerate(lines[3:-3]):
-    print(line)
+    #print(line)
 
     day = int(line[1])
     day_sin, day_cos = feature_to_sine_cosine(day, [0,6])
@@ -37,8 +38,11 @@ for i, line in enumerate(lines[3:-3]):
     month_sin, month_cos = feature_to_sine_cosine(month, [1,12])
 
     hour = int(line[0].split(" ")[1].split(":")[0])
-    
-    hour_sin, hour_cos = feature_to_sine_cosine(hour, [0, 23])
+    minute = int(line[0].split(" ")[1].split(":")[1])
+    total_minutes = hour * 60 + minute
+
+    #yes wrong var name doesnt matter
+    hour_sin, hour_cos = feature_to_sine_cosine(total_minutes, [0, 1425])
 
     weather = 0
 
@@ -48,12 +52,22 @@ for i, line in enumerate(lines[3:-3]):
     # new_data.append(int(lines[i+3+3][current_station+3])) # plus three because start with third line
     # new_data.append(int(lines[i+2+3][current_station+3]))
     # absolute
-    new_data.append(int(lines[i+1+3][current_station+3]))
-
+    v = int(lines[i+1+3][current_station+3])
+    # new_data.append(v)
+    if v not in amounts:
+        amounts.append(v)
     # change of station
     # new_data.append(int(lines[i+1+3][current_station+3]) - int(lines[i+3][current_station+3]))
-    #new_data.extend([month_sin, month_cos, day_sin, day_cos, is_weekend, weather, hour_sin, hour_cos])
-    new_data.extend([hour_sin, hour_cos])
+
+    # more than 0 as y and abs as x
+    # if int(lines[i+1+3][current_station+3])<1:
+    #    print(i)
+    # new_data.append(1 if int(lines[i+1+3][current_station+3])>0 else 0)
+
+    # categorical that is excel type
+    new_data.append(0 if v == 0 else (1 if v==1 else (2 if v in [2,3] else (3 if v in [4,5,6] else 4))))
+    new_data.extend([month_sin, month_cos, day_sin, day_cos, is_weekend, weather, hour_sin, hour_cos])
+    #new_data.extend([hour_sin, hour_cos])
 
     
 
@@ -70,8 +84,9 @@ for i, line in enumerate(lines[3:-3]):
     data.append(new_data)
 
 #print(data)
-
-with open(f"jj_train{current_station}.csv", "w", newline='') as file:
+amounts.sort()
+print(amounts)
+with open(f"jj_train{current_station}_c_m.csv", "w", newline='') as file:
     writer = csv.writer(file)
 
     writer.writerows(data)
