@@ -10,19 +10,17 @@ with open(filename, "r") as file:
 
 for i, e in enumerate(lines.copy()):
     for j, l in enumerate(e):
-        '''
-
-        todo substract two hours in app
+        
+        
         
         
         if i!=0 and j == 0:
-            l2 = l.split(" ")
-            l21 = l2[0].split("-")
-            l22 = l2[1].split(":")
-            before = datetime(int(l21[0]), int(l21[1]), int(l21[2]), int(l22[0]), int(l22[1]), int(l22[2]))
-            lines[i][j] = str(before + timedelta(hours=2))
+            date = datetime.strptime(l, "%Y-%m-%d %H:%M:%S")
+            dt2 = date + timedelta(hours=2)
+            out = dt2.strftime("%Y-%m-%d %H:%M:%S")
+            lines[i][j] = out
 
-        '''
+        
         if l == '':
             lines[i][j] = '0'
 
