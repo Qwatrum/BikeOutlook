@@ -1,6 +1,7 @@
 import csv
 import math
 import pandas
+import random
 def main(category, tr, for_nn):
     input_file = "trainJuneJulyCleaned2.csv"
     output_file = "juneJuly"
@@ -42,6 +43,12 @@ def main(category, tr, for_nn):
 
         # removed hour and mintue sin cos day date sin cos
         return [year, month, month_sin, month_cos, day_of_week, day_sin, day_cos, is_weekend, hour, minute, total_minutes, minutes_sin, minutes_cos]
+
+    def to_category(v):
+        return 0 if v == 0 else (1 if v==1 else (2 if v in [2,3] else (3 if v in [4,5,6] else 4)))
+
+    def to_availability(v):
+        return 1 if v > 0 else 0
     weather = {}
     with open("wetterdaten_15min.csv", "r", encoding='utf-8') as file:
         lines = list(csv.reader(file))
@@ -176,10 +183,15 @@ def main(category, tr, for_nn):
                     #new_row.append(moments_int[k] - others_int[k])
                     #new_row.append(others_int[k] - others_int2[k])
 
-                data.append(new_row)
+                if target_amount != to_availability(current_amount):
+                    data.append(new_row)
+                elif random.randint(0, 100) > 97:
+                    data.append(new_row)
+                else:
+                    continue
     print(targets)
     print(equal_predicts)
     nn = "_nn" if for_nn == 1 else ""
-    with open(output_file+"_"+c+"_"+str(int(train_predict))+nn+"_L.csv", "w", encoding='utf-8', newline='') as file:
+    with open(output_file+"_"+c+"_"+str(int(train_predict))+nn+"_L_o.csv", "w", encoding='utf-8', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(data)

@@ -7,7 +7,7 @@ from keras.layers import Input, Dense, Dropout
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 
-df = pd.read_csv("jj_train0_d.csv", header=None)
+df = pd.read_csv("jj_train0_a_m.csv", header=None)
 
 y_raw = df.iloc[:, 0].values
 x_raw = df.iloc[:, 1:].values
@@ -15,17 +15,17 @@ x_raw = df.iloc[:, 1:].values
 x_train, x_test, y_train_raw, y_test_raw = train_test_split(x_raw, y_raw, test_size=0.05, shuffle=False)
 # 26
 # jj 34
-y_train = to_categorical(y_train_raw, num_classes=34)
-y_test = to_categorical(y_test_raw, num_classes=34)
+y_train = to_categorical(y_train_raw, num_classes=28)
+y_test = to_categorical(y_test_raw, num_classes=28)
 
 print(x_train.shape)
 
 # 362 242
 # jj 377 252
 model = Sequential()
-model.add(Input(shape=(252,)))
+model.add(Input(shape=(383,)))
 model.add(Dense(68, activation='relu'))
-model.add(Dense(34, activation='softmax'))
+model.add(Dense(28, activation='softmax'))
 
 
 model.compile(keras.optimizers.Adam(learning_rate=0.001),

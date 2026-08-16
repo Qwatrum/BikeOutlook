@@ -7,7 +7,7 @@ from keras.layers import Input, Dense, Dropout
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 
-df = pd.read_csv("jj_train0_m.csv", header=None)
+df = pd.read_csv("jj_train0_a_c_m.csv", header=None)
 
 y_raw = df.iloc[:, 0].values
 x_raw = df.iloc[:, 1:].values
