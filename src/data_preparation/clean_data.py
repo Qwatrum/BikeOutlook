@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime, timedelta
 
-filename = "data/trainJuneJuly.csv"
+filename = "data_preparation/trainJuneJuly.csv"
 
 
 with open(filename, "r") as file:

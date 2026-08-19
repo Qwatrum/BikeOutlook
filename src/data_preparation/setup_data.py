@@ -6,10 +6,9 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
     input_file = "trainJuneJulyCleaned2.csv"
     output_file = "juneJuly"
     c = ""
-    # categories = {"categorical":0, "absolute": 1, "available": 0, "change": 0}
     categories = category
     train_start = int(24 * 60 / 15) # 24h
-    # train_predict = int(60 / 15) # 60min
+
     train_predict = tr
     station_ids = [306149925,306150652,306151680,306152946,306153381,306154042,306155298,306155771,306157005,306157498,306159446,306424741,306426180,306427898,306427940,306429471,306429774,306430168,306430513,306432156,306434837,306435831,306436482,306437759,306584215,306586739,306589353,306591040,306592207,306608230,306611557,306612767,306614385,306615251,306616745,306618340,306619536,306621528,306632182,306633317,306634776,306636890,306637891,306638803,306641629,306642669,306644874,306646326,306647862,307167971,340929155,349238105,491528970,491529093,494484950,498525578,498527077,501685208,501686803,502500548,502644017,503111106,503112749,503913022,503913656,504159382,504161296,508767590,508797016,510452084,510661082,510668681,510669510,510823763,511030440,511031589,511032542,511033558,511746900,511748258,511750351,512964246,512979792,513312395,513313081,513313802,513369212,515857745,518186274,518187588,518188627,518189709,522790447,524003076,524251504,526095217,535580393,549361281,560798726,560799825,562880614,562881229,562882007,563250095,563251452,563252736,563255058,563255677,563917827,563962959,600959781,606704630,606705162,607882729,607883109,607883401,610254646,611851824,611900524,612091846,621820081,621821180,621871253,622029184,629549986]
 
@@ -35,19 +34,14 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
         year = int(parts1[0])
         month = int(parts1[1])
         month_sin, month_cos = feature_to_sine_cosine(month, [1,12])
-        # day_date = int(parts1[2])
-        # day_date_sin, day_date_cos = feature_to_sine_cosine(day_date, [1,31])
         day_sin, day_cos = feature_to_sine_cosine(day_of_week, [0,6])
 
         hour = int(parts2[0])
-        # hour_sin, hour_cos = feature_to_sine_cosine(hour, [0, 23])
         minute = int(parts2[1])
-        # minute_sin, minute_cos = feature_to_sine_cosine(minute, [0, 45])
         total_minutes = hour * 60 + minute
 
         minutes_sin, minutes_cos = feature_to_sine_cosine(total_minutes, [0, 1425])
 
-        # removed hour and mintue sin cos day date sin cos
         return [year, month, month_sin, month_cos, day_of_week, day_sin, day_cos, is_weekend, hour, minute, total_minutes, minutes_sin, minutes_cos]
 
     def to_category(v):
@@ -67,7 +61,6 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
 
             weather[line[0]] = va
 
-    # targets = {}
     equal_predicts = {0: 0, 1: 0}
 
     data = []
@@ -88,14 +81,14 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
                 row.pop(5)
                 row.pop(5)
                 row.pop(5)
-            #weather_currently = weather[j+1+train_start][0].split(";")
+
             weather_currently = weather[moment[0]]
             
             row.append(int(round(float(weather_currently[0])))) # temperature in °C
             row.append(int(weather_currently[1])) # humidity
             row.append(float(weather_currently[2])) # rain
 
-            row.append(str(weather_currently[3])) # weather code
+            row.append(int(weather_currently[3])) # weather code
 
             row.append(int(round(float(weather_currently[4])))) # air pressure
             row.append(int(round(float(weather_currently[5])))) # wind speed
@@ -104,7 +97,6 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
             for i, id in enumerate(station_ids):
                 new_row = row.copy()
 
-                #row.append(str(i))
                 if not for_nn:
                     new_row.append(str(id))
 
@@ -144,10 +136,6 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
                     quit()
                 new_row.insert(0, target_amount)
                 
-                """if target_amount in targets:
-                    targets[target_amount] += 1
-                else:
-                    targets[target_amount] = 1"""
                 
                 current_amount = int(moment[i +3])
                 fifteen_ago = int(input_data[train_start+1 +j -1][i +3])
@@ -199,8 +187,13 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
                         data.append(new_row)
                     else:
                         continue
-    # print(targets)
-    print(equal_predicts)
+
+    
+    p = (1 - round(equal_predicts[0] / (equal_predicts[0] + equal_predicts[1]), 2)) * 100
+    if abs((o_rate)-p) > 2:
+        print("Oversample rate is to off compared to actual distribution")
+        print("Recommend Oversample rate: " + str(p))
+
     nn = "_nn" if for_nn == 1 else ""
     li = "_L" if less_info == 1 else ""
     o = "_o" if oversampled == 1 else ""
