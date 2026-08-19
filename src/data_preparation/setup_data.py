@@ -3,7 +3,7 @@ import math
 import pandas
 import random
 def main(category, tr, for_nn, less_info, oversampled, o_rate):
-    input_file = "trainJuneJulyCleaned2.csv"
+    input_file = "data/trainJuneJulyCleaned2.csv"
     output_file = "juneJuly"
     c = ""
     categories = category
@@ -53,7 +53,7 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
         return 1 if v > 0 else 0
     
     weather = {}
-    with open("weatherdata.csv", "r", encoding='utf-8') as file:
+    with open("data/weatherdata.csv", "r", encoding='utf-8') as file:
         lines = list(csv.reader(file))
         for line in lines[1:]:
 
@@ -205,4 +205,5 @@ def main(category, tr, for_nn, less_info, oversampled, o_rate):
 
 
 
-main({"categorical":0, "absolute": 0, "available": 1, "change": 0}, 12, 0, 1, 1, 97)
+
+main({"categorical":0, "absolute": 0, "available": 1, "change": 0}, 4, 0, 1, 1, 99)

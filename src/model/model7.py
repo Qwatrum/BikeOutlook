@@ -64,4 +64,5 @@ def run(file, save, name):
     accuracy = accuracy_score(y_test, y_pred)
     return accuracy
 
-run("data/juneJuly_ava_4_L_o.csv", False, "model4")
+
+run("data/juneJuly_ava_4_L_o.csv", True, "model4")
