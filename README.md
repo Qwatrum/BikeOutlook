@@ -50,7 +50,7 @@ In the following the focus lies on the service from nextbike GmbH (located in Ge
 Further this project is about rental bikes in Hanover (Germany, "Hannover") as an example. Hanover has a population of ~522,000 (2024) on an area of 204.01 km²[^2]. At the time of writing, Hanover has 120 Nextbike bikesharing stations, distributed in the whole city but concentrated in the center. 
 
 ### Solution:
-The solution is a mobile app displaying a map of Hanover with each station highlighted. When clicked the station shows information about the current availability and a prognose for the future. The prognose is made by a XGBoost model hosted on a server.
+The solution is a mobile app displaying a map of Hanover with each station highlighted. When clicked the station shows information about the current availability and a forecast for the future. The forecast is made by a XGBoost model hosted on a server.
 
 
 ## Architecture:
@@ -143,11 +143,11 @@ The app displaying stations near the main train station. Each icon is placed rig
 
 ![All the stations in Hanover in the app](img/example%20(3).png)
 
-ALl the stations in Hanover. They are mostly in the city center but als some outside. For example in living areas.
+All the stations in Hanover. They are mostly in the city center but als some outside. For example in living areas.
 
 ![Example view of a station](img/example%20(1).png)
 
-An example view of a widget of a station showing the current count and the prognose.
+An example view of a widget of a station showing the current count and the prediction.
 
 
 ## Do it yourself:
