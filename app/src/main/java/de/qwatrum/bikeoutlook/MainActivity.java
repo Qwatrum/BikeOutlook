@@ -1,5 +1,7 @@
 package de.qwatrum.bikeoutlook;
 
+import de.qwatrum.bikeoutlook.databinding.ActivityMainBinding;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,34 +9,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
-import androidx.navigation.ui.AppBarConfiguration;
-
-import de.qwatrum.bikeoutlook.databinding.ActivityMainBinding;
-
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.overlay.Marker;
 
 import okhttp3.Call;
@@ -57,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TAG = "BikeOutlook";
     private final OkHttpClient client = new OkHttpClient();
-    private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
     private FloatingActionButton infoButton;
@@ -112,11 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        /*ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });*/
 
 
     }
@@ -242,18 +230,7 @@ public class MainActivity extends AppCompatActivity {
         return res;
     }
 
-    private String getPrognoseSymbol(int current, int amountOne, int amountTwo, int amountThree) {
-        double weightedSum = 0.5* amountOne + amountTwo + 1.5 * amountThree;
-        double avg = weightedSum / 3;
 
-        if (avg > 1.2*current) {
-            return "+";
-        } else if (avg < 0.8*current) {
-            return "-";
-        } else {
-            return "~";
-        }
-    }
 
 
     private void showBottomDialog(String name, int id, int current, String amountOne, String amountTwo, String amountThree, String amountSix, String p1, String p2, String p3, String p6) {
@@ -267,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
 
         TextView stationTitleText = dialog.findViewById(R.id.stationTitle);
         TextView currentAmountText = dialog.findViewById(R.id.currentAmount);
-
-        //TextView prognoseSymbolText = dialog.findViewById(R.id.trend);
 
 
         TextView trendOneText = dialog.findViewById(R.id.trend_one);
@@ -284,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
         stationTitleText.setText(name);
 
         currentAmountText.setText(String.valueOf(current));
-        //prognoseSymbolText.setText(getPrognoseSymbol(current, amountOne, amountTwo, amountThree));
 
 
 

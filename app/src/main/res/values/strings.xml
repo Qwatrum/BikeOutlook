@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BikeOutlook</string>
+    <string name="current_amount">Momentane Anzahl</string>
+    <string name="prognose">Prognose</string>
+</resources>
